@@ -3,19 +3,19 @@
 $(document).keypress(function(e){
 
 	if (e.keyCode == 14 && e.ctrlKey) { // Ctrl + n
-		console.log('(nuggets) Ctrl + n')
+		console.log('(nuggets) Ctrl + n');
 		$("#add-nugget").click()
 	}
 
 	if (e.keyCode == 13 && e.ctrlKey) { // Ctrl + ENTER
-		console.log('(nuggets) Ctrl + ENTER')
+		console.log('(nuggets) Ctrl + ENTER');
 		$("#submit-nugget").click();
 		$("#submit-nugget").remove();
 	}
 
 	if (e.keyCode == 5 && e.ctrlKey) {
-		console.log('(nuggets) Ctrl + E')
-		$("#nuggets tr:hover .edit-nugget-row a").click()
+		console.log('(nuggets) Ctrl + E');
+		$("#nuggets tr:hover .edit-nugget-row a").click();
 	}
 
 });
@@ -78,7 +78,7 @@ function ajax_action(elt, callback) {
 function delete_nugget (data) {
 	$("#nugget_"+data).remove();
 	$("#raw"+data).remove();
-	count = parseInt($('#nuggets-count').text());
+	var count = parseInt($('#nuggets-count').text());
 	$('#nuggets-count').text(count - 1);
 	if (count-1 == 0) {
 		$('#tab_nuggets_title').addClass('hidden');
@@ -95,7 +95,7 @@ function edit_nugget(data) {
 }
 
 function submit_nugget () {
-	data = $("#nugget_form").serialize()
+	var data = $("#nugget_form").serialize()
 
 	$.ajax({
 		type: 'POST',
@@ -113,14 +113,14 @@ function submit_nugget () {
 				}
 
 				else if (msg.mode == 'new') {
-					url = $("#nuggets").data('fetch-url');
-					el = $("#nuggets");
+					var url = $("#nuggets").data('fetch-url');
+					var el = $("#nuggets");
 					$.get(url, function(data) {
 					  el.html(data);
 					  $("#addNugget").modal('hide');
 
 					  // Update count
-					  count = parseInt($('#nuggets-count').text());
+					  var count = parseInt($('#nuggets-count').text());
 					  $('#nuggets-count').text(count + 1);
 
 					  $('#tab_nuggets_title').removeClass('hidden');
@@ -131,7 +131,7 @@ function submit_nugget () {
 			}
 
 			else if (msg.status == 'error') {
-				html = $.parseHTML(msg.data);
+				var html = $.parseHTML(msg.data);
 				$("#addNugget .modal-body").html($(html).find('.modal-body'));
 			}
 		}

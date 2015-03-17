@@ -1,8 +1,8 @@
 $(function () {
 	if ($('#fir_todos').length > 0) {
 		function refresh_tasks_dashboard(element) {
-			page = element.data('page') || 1;
-			url = $('#tab_tasks').data('url');
+			var page = element.data('page') || 1;
+			var url = $('#tab_tasks').data('url');
 			$.get(url, { 'page': page }, function (data) {
 				$('#fir_todos').html(data);
 			});
@@ -10,7 +10,7 @@ $(function () {
 
 		// Fetch todo list if present
 		if ($('#fir_todos_list').length > 0) {
-			url = $('#fir_todos_list').data('url');
+			var url = $('#fir_todos_list').data('url');
 			$.get(url, function (data) {
 				$('#fir_todos_list').html(data);
 

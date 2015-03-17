@@ -1,18 +1,18 @@
 function execute_module_async_request () {
   $('.fir-async').each( function() {
-    url = $(this).data('fetch-url');
-    el = $(this)
+    var url = $(this).data('fetch-url');
+    var el = $(this);
     $.get(url, function(data) {
-      el.html(data)
+      el.html(data);
     })
   });
 }
 
 function execute_module_async_request_selector (selector, callback) {
-  url = $(selector).data('fetch-url');
-  el = $(selector)
+  var url = $(selector).data('fetch-url');
+  var el = $(selector);
   $.get(url, function(data) {
-    el.html(data)
+    el.html(data);
   })
 }
 
@@ -23,9 +23,9 @@ function toggle_star(incident_id) {
   $.getJSON("/ajax/incident/"+incident_id+"/toggle_star", function(msg) {
     console.log(msg);
 
-    i = $("#incident_"+incident_id).find('i.star')
-    i.toggleClass('icon-star')
-    i.toggleClass('icon-star-empty')
+    var i = $("#incident_"+incident_id).find('i.star');
+    i.toggleClass('icon-star');
+    i.toggleClass('icon-star-empty');
   });
 }
 
@@ -56,7 +56,7 @@ function toggle() {
 function bind_button_checkbox(button, checkbox) {
 
   if (checkbox.prop('checked')) {
-    button.addClass('active')
+    button.addClass('active');
   }
 
   button.click(function() {
@@ -66,7 +66,7 @@ function bind_button_checkbox(button, checkbox) {
 
 $(
 function navigation_highlight() {
-  page = location.pathname.split("/")[1]
+  var page = location.pathname.split("/")[1];
   $('#'+page+"-nav").addClass('active')
 }
 )

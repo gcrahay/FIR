@@ -1,50 +1,50 @@
 $(function () {
   function get_template(button) {
-    url = $(button).data('url')
-    $('#send_email').button('reset')
+    var url = $(button).data('url');
+    $('#send_email').button('reset');
 
-    type = $(button).data('type')
+    var type = $(button).data('type');
 
     $.ajax({
       type: "GET",
       url: url,
       success: function(msg) {
-        $('#sendEmail #id_behalf').val(msg.behalf)
-        $('#sendEmail #id_to').val(msg.to)
-        $('#sendEmail #id_cc').val(msg.cc)
-        $('#sendEmail #id_bcc').val(msg.bcc)
-        $('#sendEmail #id_subject').val(msg.subject)
-        $('#sendEmail #id_body').val(msg.body)
+        $('#sendEmail #id_behalf').val(msg.behalf);
+        $('#sendEmail #id_to').val(msg.to);
+        $('#sendEmail #id_cc').val(msg.cc);
+        $('#sendEmail #id_bcc').val(msg.bcc);
+        $('#sendEmail #id_subject').val(msg.subject);
+        $('#sendEmail #id_body').val(msg.body);
 
-        $('#sendEmail').data('type', type)
+        $('#sendEmail').data('type', type);
 
-        tinyMCE.get('id_body').setContent(msg.body)
-        $('#sendEmail').data('bl', msg.bl)
+        tinyMCE.get('id_body').setContent(msg.body);
+        $('#sendEmail').data('bl', msg.bl);
         $("#sendEmail").modal('show');
       }
     });
   }
 
   function add_auto_comment(type, bl) {
-    date = new Date();
+    var date = new Date();
     // date format 1899-12-06 07:15
-    date = date.getFullYear() + "-" + (date.getMonth()+1) +"-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
+    date = date.getFullYear() + "-" + (date.getMonth()+1) +"-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
 
-    comment_ = ''
-    action_ = ''
+    var comment_ = '';
+    var action_ = '';
 
     if (type == 'takedown') {
-      comment_ = 'Takedown started'
-      action_ = $("#id_action option:contains('Takedown')").attr('value')
+      comment_ = 'Takedown started';
+      action_ = $("#id_action option:contains('Takedown')").attr('value');
     }
 
     if (type == 'alerting') {
-      comment_ = 'Alert sent'
+      comment_ = 'Alert sent';
       if (bl != undefined) {
         comment_ += ' to ' + bl;
       }
-      console.log(comment_)
-      action_ = $("#id_action option:contains('Alerting')").attr('value')
+      console.log(comment_);
+      action_ = $("#id_action option:contains('Alerting')").attr('value');
     }
 
   if (action_ != '') {
@@ -60,7 +60,7 @@ $(function () {
         success: function(data) {
           $('#tab_comments tbody').prepend(data);
           // Update comment count
-          count = parseInt($('#comment-count').text());
+          var count = parseInt($('#comment-count').text());
           $('#comment-count').text(count + 1);
         }
       });
@@ -69,14 +69,14 @@ $(function () {
   }
 
   function send_email() {
-    $('#send_email').button('loading')
+    $('#send_email').button('loading');
 
-    type = $('#sendEmail').data('type')
-    bl = $('#sendEmail').data('bl')
+    var type = $('#sendEmail').data('type');
+    var bl = $('#sendEmail').data('bl');
 
-    var body = tinyMCE.get('id_body').getContent()
-    $("#id_body").val(body)
-    data = $("#email_form").serialize()
+    var body = tinyMCE.get('id_body').getContent();
+    $("#id_body").val(body);
+    var data = $("#email_form").serialize();
 
     $.ajax({
       type: 'POST',
@@ -85,18 +85,18 @@ $(function () {
       success: function(msg) {
 
         if (msg.status == 'ok') {
-              b = $('#send_email')
-              b.text('Sent')
-              b.prop('disabled', true)
-              $("#sendEmail").modal('hide')
-              add_auto_comment(type, bl)
+              var b = $('#send_email');
+              b.text('Sent');
+              b.prop('disabled', true);
+              $("#sendEmail").modal('hide');
+              add_auto_comment(type, bl);
             }
         if (msg.status == 'ko') {
-              b = $('#send_email')
-              b.text('ERROR')
-              b.prop('disabled', true)
-              alert("Something went terribly, terribly wrong:\n"+msg.error)
-              $("#sendEmail").modal('hide')
+              var b = $('#send_email');
+              b.text('ERROR');
+              b.prop('disabled', true);
+              alert("Something went terribly, terribly wrong:\n"+msg.error);
+              $("#sendEmail").modal('hide');
         }
       }
     });

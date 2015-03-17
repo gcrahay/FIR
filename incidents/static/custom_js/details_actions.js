@@ -20,12 +20,12 @@ $(function () {
 
 	$("#id_file").change(function() {
 		$('div.upload').hide();
-		files = $(this)[0].files;
+		var files = $(this)[0].files;
 
 		$('#filetable').empty();
 		$('#filetable').append("<thead><tr><th>Filename</th><th>Description</th></tr></thead>");
 		for (var i = 0; i < files.length; i++) {
-			input = "<input type='text' name='description' class='input-medium' />";
+			var input = "<input type='text' name='description' class='input-medium' />";
 			$('#filetable').append("<tr><td>"+files[i].name+"</td><td>"+input+"</td></tr>");
 		}
 	})
@@ -38,8 +38,8 @@ $(function () {
 	// Attributes
 	//
 	function update_attribute_placeholder() {
-		placeholder = 'value';
-		unit = $('#attributes option:selected').attr('data-unit');
+		var placeholder = 'value';
+		var unit = $('#attributes option:selected').attr('data-unit');
 		if ((unit != '') && (unit != 'count') && (unit != 'None')) {
 			placeholder = placeholder + ' in ' + unit;
 		}
@@ -85,7 +85,7 @@ $(function () {
 
 	// Set up form for new comment
 	$('#details-actions-comment').click(function (event) {
-		form = $('#addComment form');
+		var form = $('#addComment form');
 		form.attr('action', form.data('new-comment-url'));
 		form.data('target', '#tab_comments tbody');
 		form.data('action', 'prepend');
@@ -93,21 +93,21 @@ $(function () {
 		$("#id_comment").val('');
     	$("#id_action").val('');
 
-    	date = new Date();
+    	var date = new Date();
     	date = date.getFullYear() + "-" + (date.getMonth()+1) +"-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
     	$("#id_date").val(date);
 	});
 
 	// Set up form for update
 	$('#tab_comments').on('click', '.edit-comment', function (event) {
-		form = $('#addComment form');
-		comment_id = $(this).data('comment-id');
+		var form = $('#addComment form');
+		var comment_id = $(this).data('comment-id');
 
 		$.getJSON("/ajax/comment/" + comment_id, function(msg) {
 			var comment = jQuery.parseJSON(msg)[0];
-      		text = comment.fields.comment;
-      		action = comment.fields.action;
-      		date = new Date(comment.fields.date);
+      		var text = comment.fields.comment;
+      		var action = comment.fields.action;
+      		var date = new Date(comment.fields.date);
       		// date format 1899-12-06 07:15
       		date = date.getFullYear() + "-" + (date.getMonth()+1) +"-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
 
@@ -133,7 +133,7 @@ $(function () {
 		// Hack not to trigger on update
 		if ($('#addComment form').data('action') != 'replaceWith') {
 			// Update comment count
-			count = parseInt($('#comment-count').text());
+			var count = parseInt($('#comment-count').text());
 			$('#comment-count').text(count + 1);
 		}
 
@@ -143,7 +143,7 @@ $(function () {
 	// Custom behavior when comment is removed
 	$('#tab_comments').on('fir.form.success', function (event) {
 		// Update comment count
-		count = parseInt($('#comment-count').text());
+		var count = parseInt($('#comment-count').text());
 		$('#comment-count').text(count - 1);
 
 		event.stopPropagation();
