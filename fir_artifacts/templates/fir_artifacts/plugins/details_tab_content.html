@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<div class='tab-pane' id='tab_artifacts'>
+	<div class='fir-async' id='artifacts' data-fetch-url="{% url 'fir_artifacts:list' event.id %}">
+		{%  trans "Loading artifacts..." %}
+	</div>
+</div>

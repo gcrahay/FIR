@@ -105,24 +105,6 @@
 			</div>
 
 			<div class="col-sm-5 col-xs-12" id="incident-sidebar">
-				{% if correlated_count > 0 %}
-					<div class="widget">
-						<h4 class='widget'>{%  trans "Correlated Artifacts" %}</h4>
-
-						<table class='table table-condensed artifacts-table artifacts fixed'>
-							<thead>
-								<tr>
-									<th class='head'>{%  trans "Type" %}</th>
-									<th>{%  trans "Values" %}</th>
-								</tr>
-							</thead>
-							{% for artifact_type in artifacts %}
-								{{ artifact_type|display_correlated_artifact:request }}
-							{% endfor %}
-						</table>
-					</div>
-				{% endif %}
-
 				<div class='widget {% if event.file_set.count == 0 %}hidden{% endif%}' id='details-files'>
 					<h4 class='widget'>{%  trans "Related files" %}</h4>
 						{% if event.file_set.count > 0 %}
@@ -213,7 +195,7 @@
 						</table>
 					</div>
 				{% endif %}
-
+				{% plugin_point 'details_sidebar' %}
 			</div>
 		</div>
 
@@ -224,13 +206,6 @@
 						{% trans "Comments" %} (<span id='comment-count'>{{ comments.count }}</span>)
 					</a>
 				</li>
-				{% if artifacts_count > 0 %}
-					<li>
-						<a href='#tab_artifacts' data-toggle='tab'>
-							{% trans "Artifacts" %} ({{ artifacts_count }})
-						</a>
-					</li>
-				{% endif %}
 				{% plugin_point 'details_tab' %}
 			</ul>
 		</div>
@@ -250,28 +225,6 @@
 					</thead>
 					{% for comment in comments.all reversed %}
 						{% include 'events/_comment.html' %}
-					{% endfor %}
-				</table>
-			</div>
-			<div class='tab-pane' id='tab_artifacts'>
-				{% if event.file_set.count > 0 %}
-					<table class='table table-condensed files-table files fixed'>
-						<tr><th>{%  trans "Filename" %}</th><th>SHA-256</th><th>SHA-1</th><th>MD5</th></tr>
-						{% for f in event.file_set.all %}
-							<tr><td>{{ f.getfilename }}</td>{% for h in f.hashes.all %}<td>{{h}}</td>{% endfor %}</tr>
-						{% endfor %}
-					</table>
-
-					<h3>{%  trans "Other artifacts" %}</h3>
-				{% endif %}
-
-				<table class='table table-condensed artifacts-table artifacts'>
-					<thead>
-						<th class='head'>{%  trans "Type" %}</th>
-						<th>{%  trans "Values" %}</th>
-					</thead>
-					{% for artifact_type in artifacts %}
-						{{ artifact_type|display_artifact:request }}
 					{% endfor %}
 				</table>
 			</div>

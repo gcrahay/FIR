@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load fir_artifacts %}
+
+{% if correlated_count > 0 %}
+	<div class="widget">
+		<h4 class='widget'>{%  trans "Correlated Artifacts" %}</h4>
+
+		<div class='fir-async' id='sidebar_artifacts' data-fetch-url="{% url 'fir_artifacts:correlation' event.id %}">
+			{%  trans "Loading artifacts..." %}
+		</div>
+	</div>
+{% endif %}
