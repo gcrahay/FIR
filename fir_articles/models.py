@@ -125,7 +125,7 @@ class SearchArticleForm(forms.Form):
 class ArticleCommentForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(ModelForm, self).__init__(*args, **kwargs)
-		self.fields['comment'].error_messages['required'] = 'This field is required.'
+		self.fields['comment'].error_messages['required'] = _('This field is required.')
 
 	class Meta:
 		model = ArticleComments
