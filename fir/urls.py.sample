@@ -28,4 +28,7 @@ urlpatterns = patterns('',
 
     # nuggets
     url(r'^nuggets/', include('fir_nuggets.urls', namespace='nuggets')),
+
+    # articles
+    url(r'^articles/', include('fir_articles.urls', namespace='articles')),
 )
