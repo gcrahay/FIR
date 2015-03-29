@@ -2,10 +2,10 @@
 
 
 # Create your views here.
-from incidents.settings import settings
 from incidents.models import IncidentCategory, Incident, Comments, BusinessLine, Label, Log, BaleCategory, \
     Attribute, ValidAttribute, IncidentTemplate, Profile
 from incidents.models import IncidentForm, CommentForm
+from incidents.settings import settings
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -21,6 +21,8 @@ from django.template import Template
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms.models import model_to_dict
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.staticfiles import finders
+from django.template.response import TemplateResponse
 
 import re, datetime
 from dateutil.relativedelta import *
@@ -1928,3 +1930,14 @@ def dashboard_old(request):
 			'order_param': 'last_action',
 			'asc': 'true'
 		})
+
+# tools ==================================================================
+
+def mce_config(request):
+	lang = request.LANGUAGE_CODE
+	if not finders.find("js/tinymce/langs/%s.js" % lang):
+		lang = lang.split('-')[0]
+		if not finders.find("js/tinymce/langs/%s.js" % lang):
+			lang = "en"
+	return TemplateResponse(request, "tools/mce_config.js", context={"mce_lang": lang},
+                            content_type="application/javascript")
