@@ -27,17 +27,17 @@ $(document).ready(function() {
 {% block content %}
 
 	<div class="container-fluid">
-		{% if not i %}
+		{% if not article %}
 			<form action="{% url 'articles:new' %}" method="post">
 		{% else %}
 			<form action="{% url 'articles:edit' article.pk %}" method="post">
 		{% endif %}
 
 			<div class="row header">
-				{% if not i %}
+				{% if not article %}
 					<h1 class="col-sm-11">{% trans "New article" %}</h1>
 				{% else %}
-					<h1 class="col-sm-11">{% trans "Article" %}: {{ i.subject }}</h1>
+					<h1 class="col-sm-11">{% trans "Article" %}: {{ article.subject }}</h1>
 				{% endif %}
 				<div class="col-sm-1">
 					<button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
