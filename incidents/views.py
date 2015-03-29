@@ -2,6 +2,7 @@
 
 
 # Create your views here.
+from incidents.settings import settings
 from incidents.models import IncidentCategory, Incident, Comments, BusinessLine, Label, Log, BaleCategory, \
     Attribute, ValidAttribute, IncidentTemplate, Profile
 from incidents.models import IncidentForm, CommentForm
@@ -122,7 +123,9 @@ def followup(request, incident_id):
 @login_required
 @user_passes_test(is_incident_handler)
 def index(request, is_incident=False):
-	return render(request, 'events/index-all.html', {'incident_view': is_incident})
+	return render(request, 'events/index-all.html', {
+		'incident_view': is_incident,
+    })
 
 
 @login_required
@@ -158,7 +161,8 @@ def details(request, incident_id):
 														'artifacts': artifacts,
 														'attributes': attributes,
 														'valid_attributes': valid_attributes,
-														'comments' : comments
+														'comments' : comments,
+														'show_number': settings.INCIDENT_SHOW_NUMBER
 													})
 
 
@@ -1884,7 +1888,8 @@ def incident_display(request, filter, incident_view=True, paginated=True):
 			'incident_list': incident_list,
 			'incident_view': incident_view,
 			'order_param': order_param,
-			'asc': asc
+			'asc': asc,
+            'show_number': settings.INCIDENT_SHOW_NUMBER
 		})
 
 
