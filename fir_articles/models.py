@@ -73,7 +73,7 @@ class Article(models.Model):
 		for a in new_artifacts:
 			new = Artifact(type=a[0], value=a[1])
 			new.save()
-			new.incidents.add(self)
+			new.relations.add(self)
 
 		for a in all_artifacts:
 			artifacts.after_save(a[0], a[1], self)
