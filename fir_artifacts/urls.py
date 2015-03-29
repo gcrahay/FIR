@@ -3,9 +3,10 @@ from django.conf.urls import patterns, url
 from fir_artifacts import views
 
 urlpatterns = patterns('',
-	url(r'^(?P<event_id>\d+)/list', views.list, name='list'),
-    url(r'^(?P<event_id>\d+)/correlation', views.correlation, name='correlation'),
-	#url(r'^(?P<event_id>\d+)/new', views.new, name='new'),
-	#url(r'^edit/(?P<nugget_id>\d+)', views.edit, name='edit'),
-	#url(r'^delete/(?P<nugget_id>\d+)', views.delete, name='delete'),
+    url(r'^(?P<artifact_id>\d+)/detach/(?P<relation_name>\w+)/(?P<relation_id>\d+)/$', views.detach_artifact, name='detach'),
+    url(r'^(?P<artifact_id>\d+)/correlations/$', views.artifacts_correlations, name='correlations'),
+    url(r'^files/(?P<content_type>\d+)/upload/(?P<object_id>\d+)/$', views.upload_file, name='upload_file'),
+    url(r'^files/(?P<content_type>\d+)/archive/(?P<object_id>\d+)/$', views.download_archive, name='download_archive'),
+    url(r'^files/(?P<file_id>\d+)/remove/$', views.remove_file, name='remove_file'),
+    url(r'^files/(?P<file_id>\d+)/download/$', views.download, name='download_file'),
 )
