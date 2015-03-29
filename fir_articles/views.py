@@ -1,27 +1,18 @@
 # -*- coding: utf-8 -*-
 import datetime
-import mimetypes
-import os
-import re
-import tempfile
-import zipfile
-from django.conf import settings
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpResponseServerError
 from json import dumps
 from django.core import serializers
-from django.core.servers.basehttp import FileWrapper
 
 from fir_articles.models import Article, ArticleCommentForm, ArticleAttribute, ArticleComments, \
-    File, ArticleForm, SearchArticleForm
-from fir_artifacts import Hash
+    ArticleForm, SearchArticleForm
 
 from fir_artifacts.artifacts import all_for_object
-from fir_artifacts.files import do_remove_file, do_download_archive
-from incidents.models import ValidAttribute, Label, Artifact
+from incidents.models import ValidAttribute
 
 
 @login_required

@@ -1,17 +1,18 @@
 import datetime
-import hashlib
-import os
 
 from django.db import models
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from incidents.models import Incident, IncidentCategory
 from fir_plugins.models import link_to
 
 from fir_artifacts import artifacts
 from fir_artifacts.models import Artifact, File
+
+
 STATUS_CHOICES = (
 	("O", "Open"),
 	("A", "Archived"),
@@ -92,7 +93,7 @@ class ArticleComments(models.Model):
 	opened_by = models.ForeignKey(User)
 
 	def __unicode__(self):
-		return u"Comment for incident %s" % self.incident.id
+		return u"Comment for article %s" % self.article.id
 
 
 class ArticleAttribute(models.Model):
@@ -108,15 +109,16 @@ class ArticleForm(ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(ModelForm, self).__init__(*args, **kwargs)
-		self.fields['subject'].error_messages['required'] = 'This field is required.'
-		self.fields['category'].error_messages['required'] = 'This field is required.'
+		self.fields['subject'].error_messages['required'] = _('This field is required.')
+		self.fields['category'].error_messages['required'] = _('This field is required.')
 
 	class Meta:
 		model = Article
 		exclude = ('opened_by', 'incidents', 'artifacts')
 
 class SearchArticleForm(forms.Form):
-	category = forms.ModelChoiceField(label="Category", queryset=IncidentCategory.objects.all(),widget=forms.Select(attrs={'class':'form-control input-sm'}), required=False)
+	category = forms.ModelChoiceField(label="Category", queryset=IncidentCategory.objects.all(),
+                                      widget=forms.Select(attrs={'class':'form-control input-sm'}), required=False)
 	status = forms.ChoiceField(choices=STATUS_CHOICES, initial=STATUS_CHOICES[0][0], required=False)
 
 
