@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse
 from django.db.models import Q, Max
-from django.http import HttpResponse, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpResponseServerError, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from json import dumps
@@ -72,7 +72,10 @@ def user_login(request):
 				login(request, user)
 				log("Login", user)
 				init_session(request)
-				return redirect('dashboard:main')
+				next = request.GET.get('next', '/')
+				if not next or next == '/':
+					return redirect('dashboard:main')
+				return HttpResponseRedirect(next)
 			else:
 				return HttpResponse('Account disabled')
 		else:
