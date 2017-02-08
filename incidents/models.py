@@ -12,7 +12,7 @@ from django.conf import settings
 
 from treebeard.mp_tree import MP_Node
 
-from fir_artifacts import artifacts
+from fir_artifacts.artifacts import registry as artifact_registry
 from fir_artifacts.models import Artifact, File
 from fir_plugins.models import link_to
 from incidents.authorization import tree_authorization, AuthorizationModelMixin
@@ -244,7 +244,7 @@ class Incident(FIRModel, models.Model):
             for c in coms:
                 data += "\n" + c.comment
 
-        found_artifacts = artifacts.find(data)
+        found_artifacts = artifact_registry.extract(data)
 
         artifact_list = []
         for key in found_artifacts:
@@ -269,7 +269,7 @@ class Incident(FIRModel, models.Model):
             new.incidents.add(self)
 
         for a in all_artifacts:
-            artifacts.after_save(a[0], a[1], self)
+            artifact_registry.after_save(a[0], a[1], self)
 
     class Meta:
         permissions = (

@@ -42,7 +42,7 @@ from bson import json_util
 import copy
 import math
 
-from fir_artifacts import artifacts as libartifacts
+from fir_artifacts.artifacts import registry as artifact_registry
 
 cal = [
     'jan',
@@ -219,7 +219,7 @@ def details(request, incident_id, authorization_target=None):
         form.fields['action'].queryset = Label.objects.filter(group__name='action').exclude(
             name__in=['Closed', 'Opened', 'Blocked'])
 
-    (artifacts, artifacts_count, correlated_count) = libartifacts.all_for_object(i, user=request.user)
+    (artifacts, artifacts_count, correlated_count) = artifact_registry.search_from_relation(i, user=request.user)
 
     """
     Temp fix until i figure out how to set this
@@ -622,7 +622,7 @@ def search(request):
             artifacts = re.search("art:(\S+)", query_string)
             if artifacts:
                 artifacts = artifacts.group(1)
-                q = q & Q(id__in=[i.id for i in libartifacts.incs_for_art(artifacts)])
+                q = q & Q(id__in=[i.id for i in artifact_registry.search_related_from_string(artifacts)])
                 query_string = query_string.replace('art:' + artifacts, '')
 
             if query_string.count('starred') > 0:
