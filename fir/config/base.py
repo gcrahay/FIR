@@ -155,3 +155,31 @@ USER_SELF_SERVICE = {
     # User can change his password
     'CHANGE_PASSWORD': True
 }
+
+# Tools to display additional data to artifacts
+ARTIFACTS_TOOLS = {
+    'ip': [
+        {'tool': 'link',
+         'name': 'CentralOps',
+         'url_template': 'http://centralops.net/co/DomainDossier.aspx?addr={{artifact.value}}&dom_whois=1&net_whois=1&dom_dns=1'
+         },
+    ],
+    'hostname': [
+        {'tool': 'link',
+         'name': 'CentralOps',
+         'url_template': 'http://centralops.net/co/DomainDossier.aspx?addr={{artifact.value}}&dom_whois=1&net_whois=1&dom_dns=1'
+         },
+    ],
+    'hash': [
+        {'tool': 'link',
+         'name': 'VirusTotal',
+         'url_template': 'https://www.virustotal.com/en/search/?query={{artifact.value}}'
+         },
+    ],
+    'cve': [
+        {'tool': 'link', 'name': 'CVE', 'url_template': "http://cve.circl.lu/cve/{{artifact.value}}"}
+    ],
+    'cwe': [
+        {'tool': 'link', 'name': 'CWE', 'url_template': "http://cve.circl.lu/cwe/{{artifact.value|slice:'4:'}}"}
+    ]
+}
