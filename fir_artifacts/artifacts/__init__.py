@@ -8,6 +8,7 @@ from fir_artifacts.artifacts.ip import IP
 from fir_artifacts.artifacts.url import URL
 from fir_artifacts.artifacts.hostname import Hostname
 from fir_artifacts.artifacts.email import Email
+from fir_artifacts.artifacts.cve import CommonVulnerabilityAndExposure, CommonWeaknessEnumeration
 from fir_artifacts.artifacts.mac import MAC
 
 
