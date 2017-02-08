@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-08 08:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: apps.py:9 templates/fir_artifacts/plugins/details_tab.html:6
+msgid "Artifacts"
+msgstr "Artefacts"
+
+#: artifacts/tools/base.py:78
+msgid ""
+"You must register a subclass of AbstractArtifactTool as an artifact tool."
+msgstr ""
+
+#: artifacts/tools/base.py:81
+msgid "Wrong parameters or incompatible artifact type for {}"
+msgstr ""
+
+#: artifacts/tools/link.py:28
+#, python-brace-format
+msgid "{link_name} on"
+msgstr "{link_name} de"
+
+#: templates/fir_artifacts/correlation_list.html:4
+#, python-format
+msgid "List of correlations including %(artifact_display)s %(artifact_value)s"
+msgstr "Liste des corrélations de %(artifact_display)s %(artifact_value)s"
+
+#: templates/fir_artifacts/correlation_list.html:7
+msgid "Back"
+msgstr "Retour"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:7
+msgid "Related files"
+msgstr "Fichiers associés"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:12
+msgid "Date"
+msgstr ""
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:13
+msgid "File"
+msgstr "FIchier"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:14
+msgid "Description"
+msgstr ""
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:45
+msgid "Dropzone"
+msgstr "Zone de dépôt"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:51
+msgid "Browse..."
+msgstr "Explorer..."
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:54
+msgid "Upload files"
+msgstr "CHarger les fichiers"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:59
+msgid "Download archive"
+msgstr "Télécharger l'archive"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:67
+msgid "Correlated Artifacts"
+msgstr "Artefacts corrélés"
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:73
+#: templates/fir_artifacts/plugins/details_tab_content.html:19
+msgid "Type"
+msgstr ""
+
+#: templates/fir_artifacts/plugins/details_sidebar.html:74
+#: templates/fir_artifacts/plugins/details_tab_content.html:20
+msgid "Values"
+msgstr "Valeurs"
+
+#: templates/fir_artifacts/plugins/details_tab_content.html:8
+msgid "Filename"
+msgstr "Nom de fichier"
+
+#: templates/fir_artifacts/plugins/details_tab_content.html:14
+msgid "Other artifacts"
+msgstr "Autres artefacts"
