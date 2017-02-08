@@ -3,6 +3,14 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
+@register.filter
+def static_artifact(artifacts, request):
+    lines = []
+    for artifact in artifacts:
+        lines.extend([tool.static(request) for tool in artifact._tools])
+    return mark_safe('\n'.join(lines))
+
 @register.filter
 def display_artifact(artifact, request):
     return artifact.display(request)
