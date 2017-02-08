@@ -18,13 +18,66 @@ It creates a tab in the incident details view, listing all the associated artifa
 
 All "correlated artifacts" (i.e. artifacts that appear in more than one incident), if any, will be colored in red and will have a special display at the top-right corner of the incident details view.
 
+### Tools
+
+Tools provide additional information on your artifacts.
+
+#### Settings
+
+You can link a tool to an artifact type with the `ARTIFACTS_TOOLS` setting.
+
+The default tools are :
+
+```python
+ARTIFACTS_TOOLS = {
+    'ip': [
+        {'tool': 'link',
+         'name': 'CentralOps',
+         'url_template': 'http://centralops.net/co/DomainDossier.aspx?addr={{artifact.value}}&dom_whois=1&net_whois=1&dom_dns=1'
+         },
+    ],
+    'hostname': [
+        {'tool': 'link',
+         'name': 'CentralOps',
+         'url_template': 'http://centralops.net/co/DomainDossier.aspx?addr={{artifact.value}}&dom_whois=1&net_whois=1&dom_dns=1'
+         },
+    ],
+    'hash': [
+        {'tool': 'link',
+         'name': 'VirusTotal',
+         'url_template': 'https://www.virustotal.com/en/search/?query={{artifact.value}}'
+         },
+    ],
+}
+```
+
+#### Tools
+
+- *link*: Create a link to an external service. The parameters are:
+  * 'tool': 'link'
+  * 'name': Name of the lonked service (string)
+  * 'url_template': Django template string to create the link URL. The artifact object (`fir_artifacts.models.Artifact') is passed to the context (access to members `type` and `value`).
+- *artifact_enrichment*: This tool brings you a modal window showing the related data fetched by the `fir_artifacts_enrichment` plugin. This tool doesn't need any parameter.
+  ```python
+  ARTIFACTS_TOOLS = {
+    'hostname': [
+        {'tool': 'link',
+         'name': 'CentralOps',
+         'url_template': 'http://centralops.net/co/DomainDossier.aspx?addr={{artifact.value}}&dom_whois=1&net_whois=1&dom_dns=1'
+         },
+        'artifact_enrichment',
+    ],
+  }
+  ```
+
+
 ## Development
 
 You can easily create your own artifacts types with little effort. All you have to do is create your own plugin (mimicking the structure of `fir_artifacts`, and create a class that inerhits from `AbstractArtifact`. Here's an example:
 
 ### Basic constructs
 
-Let's say we want to create a basic artifact type for banking account numbers. To avoid false positives, we would like to limit detections to any number of digits that are following the text `Account: `. All we have to do is create the following file:
+Let's say we want to create a basic artifact type for banking account numbers. To avoid false positives, we would like to limit detections to any number of digits that are following the text `Account: `. All we have to do is create the following file named `artifacts.py` in your plugin directory:
 
 ```python
 from fir_artifacts.artifacts import AbstractArtifact
@@ -34,6 +87,7 @@ class AccountNumber(AbstractArtifact):
 	key = 'account'
 	display_name = 'Accounts'
 	regex = r"(Account)[ \xa0]?:[ \xa0]?(?P<search>[\d]+)"
+
 ```
 
 * `key` is what references this type of artifacts internally, it should be unique.
@@ -41,14 +95,6 @@ class AccountNumber(AbstractArtifact):
 * `regex` is the regular expression used to detect artifacts in text. The value of the artifact will be taken from the `search` named group.
 
 Then, you need to install your artifact, in the `__init__.py` file for your plugin:
-
-```python
-from fir_artifacts import artifacts
-from my_custom_plugin.account_number import AccountNumber
-
-
-artifacts.install(AccountNumber)
-```
 
 ### Advanced constructs
 
@@ -63,3 +109,18 @@ You can also define the following class methods:
 
 * `find(cls, data)`: should search for artifacts in data and return a list of artifact values. By default, it is using the `regex` class variable to automatically parse the data.
 * `after_save(cls, value, event)`: this will be called after all the parsed artifacts have been saved. `value` is the artifact value, and `event` the event or incident from which the artifact was created. This can be useful in cases where post-treatment is to be applied to the artifacts (e.g. pushing them on a thir-party service, run asynchronous analytics, etc.). By default, this does nothing.
+
+### Tools
+
+You can easily create your own artifacts tools. All you have to do is create a file named `artifacts_tools.py` in your plugin directory and create a subclass of `fir_artifacts.artifacts.tools.base.AbstractArtifactTool`.
+
+This class can have the following attributes:
+- key: is what references this tool in the `ARTIFACTS_TOOLS` setting, it should be unique.
+- name: Tool name (unused)
+- managed_artifacts: list of artifact type keys this tool can enrich (default '\__all\__' for all artifact types).
+- static_template: path to a Django template used to render the static part of the tool (rendered once by artifact type, default: `None`)
+
+You can subclass these method:
+- validate_specialization(**kwargs): `kwargs` contains the parameters defined in `ARTIFACTS_TOOLS` setting. This method must validate that these parameters are correct and returns `True` (or `False`).
+- tooltip(artifact): Returns the tooltip line of this tool for the passed artifact.
+- extra(artifact): Returns additional HTML used by this tool (the tool modal for instance))
