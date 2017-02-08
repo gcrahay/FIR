@@ -5,12 +5,16 @@
 		<td class='head'>{{ artifact_name }}</td>
 		<td>
 			{% for a in artifact_values %}
+                <span {% if a.tooltips %}data-toggle="tooltip" title="" class="artifact_tooltip"
+                      data-original-title="{% for t in a.tooltips %}{{ t }}<br/>{% endfor %}" {% endif %}>
 				<a
 					{% if a.correlation_count > 1 %} class='multiple' {% endif %}
           href="{% url 'artifacts:correlations' a.id %}" data-id="{{ a.id }}"
 				>
-				{{ a.value }}
-				</a>
+                    {{ a.value }}
+                </a>
+                </span>
+
 				{% if a.correlation_count > 1 %} ({{ a.correlation_count }}) {% endif %}
                 {%  has_perm 'incidents.handle_incidents' obj=event as can_handle_incident %}
                 {% if can_handle_incident %}
@@ -21,6 +25,7 @@
 					</button>
 				</form>
                 {% endif %}
+                {% for t in a.extras %}{{ t }}{% endfor %}
 			{% endfor %}
 		</td>
 	</tr>
