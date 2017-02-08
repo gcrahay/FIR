@@ -10,7 +10,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.core.files import File as FileWrapper
 
-from fir_artifacts import Hash
+from fir_artifacts.artifacts import Hash
 from fir_artifacts.models import File, Artifact
 
 

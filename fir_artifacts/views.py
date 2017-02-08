@@ -3,12 +3,12 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-from fir_artifacts.files import do_download_archive, do_download, do_upload_file, do_remove_file
 
 from incidents.views import is_incident_viewer
 
 from fir_artifacts.models import Artifact
-
+from fir_artifacts.signals import artifact_detached
+from fir_artifacts.files import do_download_archive, do_download, do_upload_file, do_remove_file
 
 @login_required
 @user_passes_test(is_incident_viewer)
@@ -35,6 +35,7 @@ def detach_artifact(request, artifact_id, relation_name, relation_id):
     if not request.user.has_perm('incidents.handle_incidents', obj=related):
         raise PermissionDenied()
     a.relations.remove(related)
+    artifact_detached.send(sender=related.__class__, key=a.type, value=a.value, related=related)
     if a.relations.count() == 0:
         a.delete()
     return redirect('%s:details' % relation_name, relation_id)
