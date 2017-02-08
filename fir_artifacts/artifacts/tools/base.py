@@ -9,6 +9,10 @@ from django.template import Context
 
 
 class ArtifactToolMeta(type):
+    """
+    Meta class for artifact tools:
+    auto-registers the tool when discovered
+    """
     def __new__(mcs, name, parents, attributes):
         from fir_artifacts.artifacts import registry
         klass = super(ArtifactToolMeta, mcs).__new__(mcs, name, parents, attributes)
@@ -19,9 +23,13 @@ class ArtifactToolMeta(type):
 
 class AbstractArtifactTool(object):
     __metaclass__ = ArtifactToolMeta
+    # ID of the tool (mandatory and unique)
     key = None
+    # verbose name of the tool (unused and optional)
     name = "Base class for artifact tools"
+    # compatible artifact types with this tool
     managed_artifacts = '__all__'
+    # Django template for the static part
     static_template = None
 
     def __init__(self, artifact_type, related):
@@ -50,9 +58,26 @@ class AbstractArtifactTool(object):
         return template.render(context)
 
     def extra(self, artifact):
+        """
+        Generates the extra part of the tool for an artifact object
+        See `fir_artifacts_enrichement.artifacts_tools.EnrichedArtifactTool` for usage
+        Args:
+            artifact: artifact object
+
+        Returns: an HTML string or None
+
+        """
         return None
 
     def tooltip(self, artifact):
+        """
+        Generates the tooltip link of the tool for an artifact object
+        Args:
+            artifact: artifact object
+
+        Returns: an HTML string or None
+
+        """
         return ''
 
     @classmethod
