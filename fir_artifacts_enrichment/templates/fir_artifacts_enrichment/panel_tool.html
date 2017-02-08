@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<div id="enriched-artifact-{{ artifact.id }}-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="enriched-artifact-{{ artifact.id }}-modal-label" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  	<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="enriched-artifact-{{ artifact.id }}-modal-label" class="modal-title">{% trans "Enrichment" %}</h4>
+		  	</div>
+			  	<div class="modal-body">
+                    {% for enrichment in enrichments %}
+                    <dl class="dl-horizontal">
+                        {% if enrichment.name %}
+                        <dt>{% trans "Name" %}</dt><dd>{{ enrichment.name }}</dd>
+                        {% endif %}
+					    {% if enrichment.email %}
+                        <dt>{% trans "Abuse email" %}</dt><dd>{{ enrichment.email }}</dd>
+                        {% endif %}
+                    </dl>
+                    <pre>
+                        {{ enrichment.raw }}
+                    </pre>
+                    {% endfor %}
+			  	</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+			  </div>
+		  </form>
+		</div>
+	</div>
+</div>
