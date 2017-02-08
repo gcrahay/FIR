@@ -1,5 +1,7 @@
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
 from fir_artifacts.artifacts.tools.base import AbstractArtifactTool
 
 
@@ -21,5 +23,5 @@ class EnrichedArtifactTool(AbstractArtifactTool):
         if not enrichments.exists():
             return None
         return mark_safe(
-            "<a href='#' data-toggle='modal' data-target='#enriched-artifact-{artifact_id}-modal'>Enrichment</a>".format(
-                artifact_id=artifact.id))
+            "<a href='#' data-toggle='modal' data-target='#enriched-artifact-{artifact_id}-modal'>{title}</a>".format(
+                artifact_id=artifact.id, title=_('Enrichment')))
