@@ -156,7 +156,7 @@ USER_SELF_SERVICE = {
     'CHANGE_PASSWORD': True
 }
 
-# Tools to display additional data to artifacts
+# Tools to display additional data related to artifacts
 ARTIFACTS_TOOLS = {
     'ip': [
         {'tool': 'link',
