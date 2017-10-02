@@ -3,6 +3,7 @@ from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 from django.conf import settings
 import markdown2
+import bleach
 
 from ..links import registry
 
@@ -15,6 +16,8 @@ def rich_edit_static(context):
     files = [
         "<link href=\"%s\" rel=\"stylesheet\"/>" % static(
             "simplemde/simplemde.min.css"),
+        "<link href=\"%s\" rel=\"stylesheet\"/>" % static(
+            "font-awesome/css/font-awesome.min.css"),
         "<script type=\"text/javascript\" src=\"%s\"></script>" % static(
             "simplemde/marked.min.js"),
         "<script type=\"text/javascript\" src=\"%s\"></script>" % static(
@@ -39,4 +42,6 @@ def render_markdown(data):
     html = markdown2.markdown(data, extras=["link-patterns", "tables", "code-friendly"],
                               link_patterns=registry.link_patterns(),
                               safe_mode=settings.MARKDOWN_SAFE_MODE)
+    if settings.MARKDOWN_SAFE_MODE:
+        html = bleach.clean(html, tags=settings.MARKDOWN_ALLOWED_TAGS)
     return mark_safe(html)

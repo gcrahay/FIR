@@ -50,6 +50,7 @@ CONFIDENTIALITY_LEVEL = (
 
 model_created = Signal(providing_args=['instance'])
 model_updated = Signal(providing_args=['instance'])
+model_status_changed = Signal(providing_args=['instance', 'previous_status'])
 
 
 class FIRModel:
@@ -76,7 +77,7 @@ class Profile(models.Model):
 
 
 class Log(models.Model):
-    who = models.ForeignKey(User)
+    who = models.ForeignKey(User, null=True, blank=True)
     what = models.CharField(max_length=100, choices=STATUS_CHOICES)
     when = models.DateTimeField(auto_now_add=True)
     incident = models.ForeignKey('Incident', null=True, blank=True)
@@ -198,8 +199,10 @@ class Incident(FIRModel, models.Model):
         return self.get_last_action != "Closed"
 
     def close_timeout(self):
+        previous_status = self.status
         self.status = 'C'
         self.save()
+        model_status_changed.send(sender=Incident, instance=self, previous_status=previous_status)
 
         c = Comments()
         c.comment = "Incident closed (timeout)"
