@@ -4,7 +4,7 @@ This is a mandatory plugin, shipped with FIR. Therefore, it is installed by defa
 
 ## Usage
 
-This plugin is responsible for all the artifacts magic. It defines five default artifact types:
+This plugin is responsible for all the artifacts magic. It defines eight default artifact types:
 
 * Emails
 * Hashes
@@ -70,7 +70,7 @@ ARTIFACTS_TOOLS = {
 
 - *link*: Create a link to an external service. The parameters are:
   * 'tool': 'link'
-  * 'name': Name of the lonked service (string)
+  * 'name': Name of the linked service (string)
   * 'url_template': Django template string to create the link URL. The artifact object (`fir_artifacts.models.Artifact') is passed to the context (access to members `type` and `value`).
 - *artifact_enrichment*: This tool brings you a modal window showing the related data fetched by the `fir_artifacts_enrichment` plugin. This tool doesn't need any parameter.
   ```python
