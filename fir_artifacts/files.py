@@ -12,6 +12,7 @@ from django.core.files import File as FileWrapper
 
 from fir_artifacts.artifacts import Hash
 from fir_artifacts.models import File, Artifact
+from fir_artifacts.signals import artifact_detached
 
 
 def do_upload_file(request, content_type, object_id):
@@ -95,8 +96,14 @@ def do_download_archive(request, content_type, object_id):
 def do_remove_file(request, file_id):
     if request.method == "POST":
         f = get_object_or_404(File, pk=file_id)
-        if not request.user.has_perm('incidents.handle_incidents', obj=f.get_related()):
+        related = f.get_related()
+        if not request.user.has_perm('incidents.handle_incidents', obj=related):
             raise PermissionDenied()
+        for a in f.hashes.all():
+            a.relations.remove(related)
+            artifact_detached.send(sender=related.__class__, key=a.type, value=a.value, related=related)
+            if a.relations.count() == 0:
+                a.delete()
         f.file.delete()
         f.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
